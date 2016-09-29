@@ -45,8 +45,6 @@ public class CommandProcessorTest {
 
 	@Test
 	public void testParseMessage() {
-		// well-formed relay message of the format:
-		// relay <list of clients> body: <message body>
 		Message msg = commandProcessor.parseMessage("relay 2,3,4 body: Hi There!");
 		List<Long> recipientList = new ArrayList<>();
 		recipientList.add(Long.valueOf(2));
@@ -67,9 +65,4 @@ public class CommandProcessorTest {
 		assertEquals(msg.getRecipients(), recipientList);
 		assertEquals(msg.getMessageBody(), " Hi There!");
 	}
-
-	public static void main(String args[]) {
-      org.junit.runner.JUnitCore.main("com.example.CommandReceiverTest");
-    }
-
 }

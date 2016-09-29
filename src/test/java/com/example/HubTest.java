@@ -62,8 +62,4 @@ public class HubTest {
 
 	}
 
-	public static void main(String args[]) {
-      org.junit.runner.JUnitCore.main("com.example.HubTest");
-    }
-
 }

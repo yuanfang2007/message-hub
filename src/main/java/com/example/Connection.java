@@ -3,8 +3,6 @@ package com.example;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-//import com.example.Connection.QueueToSocketProcessor;
-
 //read command string from socket, parse string to Message, save into MessageQueue[CommandProcessor],
 //Ingest MessageQueue and put strings into socket[HubMessageProcessor]
 public class Connection {
