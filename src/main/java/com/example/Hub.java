@@ -21,8 +21,6 @@ public class Hub implements Callable<Void>{
 	private static long allTimeTotalUsers = 0;
 	private List<Long> activeUsers = new ArrayList<>();
 
-	//private HashMap<Long, BlockingQueue<String>> queueToClientId = new HashMap<>();
-
 	private BlockingQueue<Message> hubIncomingMessageQueue = new LinkedBlockingQueue<>(100);;
 	private HashMap<Long, Connection> clientConnectionToClientId = new HashMap<>();;
 	private HubMessageProcessor hubMessageProcessor;
@@ -43,7 +41,6 @@ public class Hub implements Callable<Void>{
 			System.exit(0);
 		}
 		init();
-
 		System.out.println("Listening on port " + Hub.PORT + ". Waiting for clients ... ");
 	}
 
@@ -61,7 +58,6 @@ public class Hub implements Callable<Void>{
 				Connection conn = registerNewUser(clientID, incomingNewSocket);
 				conn.start();
 			}
-
 		} catch(Exception e) {
 			System.out.println("Exception : " + e);
 		}
@@ -107,7 +103,6 @@ public class Hub implements Callable<Void>{
 			System.out.println("Caught IOException while creating ServerSocket");
 			System.exit(0);
 		}
-
 		return sSocket;
 	}
 
