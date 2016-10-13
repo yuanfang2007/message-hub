@@ -2,6 +2,7 @@ package com.example;
 
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
 
 //read command string from socket, parse string to Message, save into MessageQueue[CommandProcessor],
 //Ingest MessageQueue and put strings into socket[HubMessageProcessor]
@@ -19,9 +20,9 @@ public class Connection {
 		this.hub = hub;
 	}
 
-	public void startCommandProcessor() {
+	public void startCommandProcessor(ExecutorService commandProcessorExecutorService) {
 		commandProcessor = new CommandProcessor(this.connectionSocket, this.clientId, this.hub);
-		commandProcessor.start();
+		commandProcessorExecutorService.submit(commandProcessor);
 	}
 
 	public void disconnectConnection() {

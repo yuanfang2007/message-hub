@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Hub{
@@ -23,6 +25,8 @@ public class Hub{
 	private BlockingQueue<Message> hubIncomingMessageQueue = new LinkedBlockingQueue<>(100);;
 	private HashMap<Long, Connection> clientConnectionToClientId = new HashMap<>();;
 	private HubMessageProcessor hubMessageProcessor;
+	private ExecutorService commandProcessorExecutorService = Executors.newFixedThreadPool(10);
+
 
 	public static long getNewUserID() {
 		long currentID;
@@ -54,7 +58,7 @@ public class Hub{
 				clientID = getNewUserID();
 				System.out.println("Got a connection! Assigned Client ID: " + clientID);
 				Connection conn = registerNewUser(clientID, incomingNewSocket);
-				conn.startCommandProcessor();
+				conn.startCommandProcessor(commandProcessorExecutorService);
 			}
 		} catch(Exception e) {
 			System.out.println("Exception : " + e);
