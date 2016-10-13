@@ -16,9 +16,9 @@ public class Client implements Callable<Void>{
 	private Socket connectionSocket;
 	private DataOutputStream outstreamToServer;
 
-	public Client() throws UnknownHostException, IOException{
+	public Client(Socket connectionSocket) throws UnknownHostException, IOException{
+		this.connectionSocket = connectionSocket;
 		System.out.println("Connecting to " + Hub.HOST);
-		connectionSocket= new Socket(Hub.HOST, Hub.PORT);
 		System.out.println("Connected to " + Hub.HOST + " . Now write a msg like below:");
 		System.out.println(Hub.COMMAND_WHOAMI);
 		System.out.println(Hub.COMMAND_WHOISHERE);
@@ -49,7 +49,7 @@ public class Client implements Callable<Void>{
 	}
 
 	public static void main(String[] args) throws Exception {
-		Client client = new Client();
+		Client client = new Client(new Socket(Hub.HOST, Hub.PORT));
 		client.call();
 	}
 
