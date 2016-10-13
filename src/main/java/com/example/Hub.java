@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Hub implements Callable<Void>{
+public class Hub{
 	public static final String HOST = "127.0.0.1";
 	public static final int PORT = 8484;
 
@@ -40,13 +39,12 @@ public class Hub implements Callable<Void>{
 			System.out.println("Error creating server socket. Exiting.");
 			System.exit(0);
 		}
-		init();
 		System.out.println("Listening on port " + Hub.PORT + ". Waiting for clients ... ");
 	}
 
 
-	@Override
-	public Void call(){
+
+	private void startup(){
 		Socket incomingNewSocket;
 		long clientID;
 
@@ -56,12 +54,11 @@ public class Hub implements Callable<Void>{
 				clientID = getNewUserID();
 				System.out.println("Got a connection! Assigned Client ID: " + clientID);
 				Connection conn = registerNewUser(clientID, incomingNewSocket);
-				conn.start();
+				conn.startCommandProcessor();
 			}
 		} catch(Exception e) {
 			System.out.println("Exception : " + e);
 		}
-		return null;
 	}
 
 	public Connection registerNewUser(long clientID, Socket socket) {
@@ -110,14 +107,15 @@ public class Hub implements Callable<Void>{
 		serverSocket.close();
 	}
 
-	private void init() {
+	private void startMessageProcessor() {
 		hubMessageProcessor = new HubMessageProcessor(hubIncomingMessageQueue, clientConnectionToClientId);
 		hubMessageProcessor.start();
 	}
 
 	public static void main(String args[]) {
 		Hub hub = new Hub();
-		hub.call();
+		hub.startMessageProcessor();
+		hub.startup();
 	}
 
 }

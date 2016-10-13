@@ -19,7 +19,7 @@ public class Connection {
 		this.hub = hub;
 	}
 
-	public void start() {
+	public void startCommandProcessor() {
 		commandProcessor = new CommandProcessor(this.connectionSocket, this.clientId, this.hub);
 		commandProcessor.start();
 	}
