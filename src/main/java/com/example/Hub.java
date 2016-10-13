@@ -25,7 +25,7 @@ public class Hub{
 	private BlockingQueue<Message> hubIncomingMessageQueue = new LinkedBlockingQueue<>(100);;
 	private HashMap<Long, Connection> clientConnectionToClientId = new HashMap<>();;
 	private HubMessageProcessor hubMessageProcessor;
-	private ExecutorService commandProcessorExecutorService = Executors.newFixedThreadPool(10);
+	private final ExecutorService commandProcessorExecutorService = Executors.newFixedThreadPool(10);
 
 
 	public static long getNewUserID() {
@@ -48,7 +48,7 @@ public class Hub{
 
 
 
-	private void startup(){
+	private void waitForClients(){
 		Socket incomingNewSocket;
 		long clientID;
 
@@ -119,7 +119,7 @@ public class Hub{
 	public static void main(String args[]) {
 		Hub hub = new Hub();
 		hub.startMessageProcessor();
-		hub.startup();
+		hub.waitForClients();
 	}
 
 }
